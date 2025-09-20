@@ -1,66 +1,311 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Socially - A Social Blogging Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern social blogging platform built with Laravel 12, featuring user authentication, post creation, following system, and interactive features like clapping on posts.
 
-## About Laravel
+## 🚀 Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Core Functionality
+- **User Authentication & Registration** - Complete user management with email verification
+- **Blog Post Management** - Create, edit, delete, and view blog posts
+- **Media Management** - Image uploads with automatic resizing and optimization
+- **Social Features** - Follow/unfollow users, clap on posts
+- **Category System** - Organize posts by categories
+- **User Profiles** - Public and private profile management
+- **Responsive Design** - Mobile-first design with Tailwind CSS
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Technical Features
+- **Laravel 12** - Latest Laravel framework
+- **SQLite Database** - Lightweight database for development
+- **Spatie Media Library** - Advanced media management
+- **Slug Generation** - SEO-friendly URLs
+- **Alpine.js** - Lightweight JavaScript framework
+- **Vite** - Modern build tool
+- **Pest Testing** - Modern PHP testing framework
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 📋 Requirements
 
-## Learning Laravel
+- PHP 8.2 or higher
+- Composer
+- Node.js & NPM
+- SQLite (or MySQL/PostgreSQL)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🛠️ Installation
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd socially
+   ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. **Install PHP dependencies**
+   ```bash
+   composer install
+   ```
 
-## Laravel Sponsors
+3. **Install Node.js dependencies**
+   ```bash
+   npm install
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+4. **Environment setup**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-### Premium Partners
+5. **Database setup**
+   ```bash
+   php artisan migrate
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+6. **Build assets**
+   ```bash
+   npm run build
+   ```
 
-## Contributing
+7. **Start the development server**
+   ```bash
+   php artisan serve
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🗄️ Database Schema
 
-## Code of Conduct
+### Users Table
+- `id` - Primary key
+- `username` - Unique username
+- `name` - Display name
+- `email` - Email address (unique)
+- `email_verified_at` - Email verification timestamp
+- `image` - Profile image path
+- `bio` - User biography
+- `password` - Hashed password
+- `remember_token` - Remember me token
+- `created_at`, `updated_at` - Timestamps
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Posts Table
+- `id` - Primary key
+- `image` - Post image path (nullable)
+- `title` - Post title
+- `slug` - SEO-friendly URL slug (unique)
+- `content` - Post content (long text)
+- `category_id` - Foreign key to categories
+- `user_id` - Foreign key to users
+- `published_at` - Publication timestamp (nullable)
+- `created_at`, `updated_at` - Timestamps
 
-## Security Vulnerabilities
+### Categories Table
+- `id` - Primary key
+- `name` - Category name
+- `created_at`, `updated_at` - Timestamps
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Followers Table
+- `id` - Primary key
+- `user_id` - User being followed
+- `follower_id` - User doing the following
+- `created_at` - Follow timestamp
 
-## License
+### Claps Table
+- `id` - Primary key
+- `post_id` - Post being clapped
+- `user_id` - User doing the clapping
+- `created_at` - Clap timestamp
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Media Table (Spatie Media Library)
+- `id` - Primary key
+- `model_type` - Model type (polymorphic)
+- `model_id` - Model ID (polymorphic)
+- `uuid` - Unique identifier
+- `collection_name` - Media collection name
+- `name` - Original file name
+- `file_name` - Stored file name
+- `mime_type` - File MIME type
+- `disk` - Storage disk
+- `size` - File size
+- `manipulations` - Image manipulations (JSON)
+- `custom_properties` - Custom properties (JSON)
+- `generated_conversions` - Generated conversions (JSON)
+- `responsive_images` - Responsive images (JSON)
+- `order_column` - Sort order
+- `created_at`, `updated_at` - Timestamps
+
+## 🎯 Key Features Explained
+
+### User Management
+- **Registration & Login** - Standard Laravel Breeze authentication
+- **Email Verification** - Required for account activation
+- **Profile Management** - Users can update their profile information
+- **Avatar Upload** - Profile pictures with automatic resizing (128x128px)
+
+### Post Management
+- **CRUD Operations** - Full create, read, update, delete functionality
+- **Image Upload** - Post images with multiple conversion sizes (400px preview, 1200px large)
+- **Slug Generation** - Automatic SEO-friendly URL generation
+- **Category Assignment** - Posts must be assigned to a category
+- **Publishing Control** - Posts can be scheduled for future publication
+- **Read Time Calculation** - Automatic reading time estimation
+
+### Social Features
+- **Follow System** - Users can follow/unfollow other users
+- **Clap System** - Users can clap on posts (like system)
+- **Feed Algorithm** - Dashboard shows posts from followed users
+- **Public Profiles** - View other users' profiles and posts
+
+### Media Management
+- **Spatie Media Library** - Advanced media handling
+- **Image Conversions** - Automatic image resizing and optimization
+- **Multiple Collections** - Separate collections for avatars and post images
+- **File Validation** - Image type and size validation
+
+## 🧪 Testing
+
+The application uses Pest for testing with the following test coverage:
+
+### Authentication Tests
+- Login screen rendering
+- User authentication
+- Invalid password handling
+- User logout
+
+### Profile Tests
+- Profile page display
+- Profile information updates
+- Email verification status
+- Account deletion
+- Password validation for deletion
+
+### Running Tests
+```bash
+php artisan test
+# or
+./vendor/bin/pest
+```
+
+## 🎨 Frontend
+
+### Technologies
+- **Tailwind CSS** - Utility-first CSS framework
+- **Alpine.js** - Lightweight JavaScript framework
+- **Vite** - Modern build tool
+- **Blade Templates** - Laravel's templating engine
+
+### Key Components
+- **Post Item** - Reusable post display component
+- **User Avatar** - Profile picture display
+- **Follow Controller** - Follow/unfollow functionality
+- **Clap Button** - Post clapping functionality
+- **Category Tabs** - Category navigation
+- **Navigation** - Main site navigation
+
+## 🔧 Development
+
+### Available Commands
+```bash
+# Start development server with queue and Vite
+composer run dev
+
+# Run migrations
+php artisan migrate
+
+# Run tests
+php artisan test
+
+# Build assets
+npm run build
+
+# Watch assets
+npm run dev
+```
+
+### Code Structure
+```
+app/
+├── Http/
+│   ├── Controllers/     # Application controllers
+│   └── Requests/        # Form request validation
+├── Models/              # Eloquent models
+└── View/                # View components
+
+resources/
+├── css/                 # Tailwind CSS
+├── js/                  # Alpine.js and JavaScript
+└── views/               # Blade templates
+
+database/
+├── migrations/          # Database migrations
+└── factories/           # Model factories
+
+tests/
+├── Feature/             # Feature tests
+└── Unit/                # Unit tests
+```
+
+## 📱 API Endpoints
+
+### Public Routes
+- `GET /` - Dashboard (shows posts from followed users)
+- `GET /@{username}` - Public user profile
+- `GET /@{username}/{post-slug}` - Individual post view
+- `GET /category/{category}` - Posts by category
+
+### Authenticated Routes
+- `GET /post/create` - Create post form
+- `POST /post/create` - Store new post
+- `GET /post/{post-slug}` - Edit post form
+- `PUT /post/{post}` - Update post
+- `DELETE /post/{post}` - Delete post
+- `GET /my-posts` - User's own posts
+- `POST /follow/{user}` - Follow/unfollow user
+- `POST /clap/{post}` - Clap on post
+
+### Profile Routes
+- `GET /profile` - Edit profile
+- `PATCH /profile` - Update profile
+- `DELETE /profile` - Delete account
+
+## 🔒 Security Features
+
+- **CSRF Protection** - All forms protected against CSRF attacks
+- **Authentication Required** - Sensitive operations require login
+- **Email Verification** - Account activation required
+- **Authorization** - Users can only edit their own posts
+- **File Validation** - Strict image upload validation
+- **SQL Injection Protection** - Eloquent ORM prevents SQL injection
+
+## 🚀 Deployment
+
+1. **Production Environment Setup**
+   ```bash
+   composer install --optimize-autoloader --no-dev
+   npm run build
+   php artisan config:cache
+   php artisan route:cache
+   php artisan view:cache
+   ```
+
+2. **Database Configuration**
+   - Update `.env` with production database credentials
+   - Run migrations: `php artisan migrate`
+
+3. **Web Server Configuration**
+   - Point document root to `public/` directory
+   - Configure URL rewriting for Laravel
+
+## 📄 License
+
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Submit a pull request
+
+## 📞 Support
+
+For support and questions, please open an issue in the repository.
+
+---
+
+**Built with ❤️ using Laravel 12, Tailwind CSS, and Alpine.js**
